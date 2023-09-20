@@ -13,8 +13,6 @@ router.get('/userData',isAuth,getUserData);
 
 router.post('/addTask',isAuth,addTask);
 
-router.post('/addTask',isAuth,addTask);
-
 router.post('/deleteTask',isAuth,deleteTask);
 
 

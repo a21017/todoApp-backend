@@ -23,4 +23,3 @@ mongoose.connect(`mongodb+srv://Amaan:K4jN854c2cptvp4R@cluster0.uu6zbva.mongodb.
     console.log('Connected');
     app.listen(3080);
 }).catch(err=>console.log(err));
-

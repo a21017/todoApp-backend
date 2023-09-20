@@ -67,7 +67,7 @@ exports.getUserData = (req,res,next)=>{
 
     if(user){
       
-      res.json({tasks:user.userTasks});
+      res.status(200).json({tasks:user.userTasks});
     }
   })
   .catch(()=>{
