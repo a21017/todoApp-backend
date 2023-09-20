@@ -16,8 +16,8 @@ exports.login = (req,res,next)=>{
       if(result){
 
         console.log("Logged in Successfully")
-        const token = jwt.sign({email:user.email,userId:user.userId},"SOMETHINGSECRET",{expiresIn:'1h'});
-       return res.status(200).json({token:token});
+        const token = jwt.sign({userId:user._id},"SOMETHINGSECRET",{expiresIn:'1h'});
+       return res.status(200).json({token:token,userId:user._id});
 
       }
       return res.status(401).json({"message":"Invalid password!"})
@@ -34,14 +34,13 @@ exports.login = (req,res,next)=>{
 
 exports.signUp = (req, res, next) => {
 
-  console.log(req.body)
   bcrypt.hash(req.body.password, 12)
     .then((hashedPass) => {
       const user = new User({
-        userId: req.body.userId,
         userName: req.body.userName,
         email: req.body.email,
         password: hashedPass,
+        userTasks:[]
       });
 
       user
@@ -60,7 +59,73 @@ exports.signUp = (req, res, next) => {
 };
 
 
-exports.userProfile = (req,res,next)=>{
 
-    res.json({message:`Hello! ${req.userId}`});
+exports.getUserData = (req,res,next)=>{
+
+  User.findOne({_id:req.userId})
+  .then((user)=>{
+
+    if(user){
+      
+      res.json({tasks:user.userTasks});
+    }
+  })
+  .catch(()=>{
+
+  })
+
+}
+
+exports.addTask = (req,res,next)=>{
+
+  const userId = req.userId;
+
+  User.findOne({_id:userId})
+  .then((user)=>{
+
+    if(user){
+      let task = {title:req.body.title,detail:req.body.detail};
+
+      user.userTasks.push(task);
+
+      return user.save()
+      .then((result)=>{
+        res.status(201).json({message:"Task Created Successfully"})
+      });
+    }
+
+    return res.status(401).json({message:"User doesnt exists!"})
+
+  })
+  .catch(()=>{
+    res.status(500).json({error:"Internal Server Error!"})
+  })
+  
+}
+
+exports.deleteTask = (req,res,next)=>{
+
+  const userId = req.userId;
+
+  User.findOne({_id:userId})
+  .then((user)=>{
+
+    if(user){
+      let taskId = req.body.taskId;
+
+       user.userTasks = user.userTasks.filter((task)=>task._id.toString() !== taskId.toString());
+
+      return user.save()
+      .then((result)=>{
+        res.status(201).json({message:"Task Deleted Successfully"})
+      });
+    }
+
+    return res.status(401).json({message:"User doesnt exists!"})
+
+  })
+  .catch(()=>{
+    res.status(500).json({error:"Internal Server Error!"})
+  })
+  
 }

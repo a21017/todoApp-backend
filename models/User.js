@@ -6,10 +6,10 @@ const Schema = mongoose.Schema;
 
 const UserSchema = Schema({
 
-    userId:{type:String,required:true},
     userName :{ type: String },
     email:{type:String,required:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    userTasks:[{title:{type:String,required:true},detail:{type:String,required:true}}],
 })
 
 
