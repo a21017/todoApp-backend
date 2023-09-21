@@ -67,7 +67,7 @@ exports.getUserData = (req,res,next)=>{
 
     if(user){
       
-      res.status(200).json({tasks:user.userTasks});
+      res.status(200).json({tasks:user.userTasks,userName:user.userName});
     }
   })
   .catch(()=>{
@@ -90,7 +90,7 @@ exports.addTask = (req,res,next)=>{
 
       return user.save()
       .then((result)=>{
-        res.status(201).json({message:"Task Created Successfully"})
+        res.status(201).json({tasks:result.userTasks})
       });
     }
 
@@ -117,7 +117,7 @@ exports.deleteTask = (req,res,next)=>{
 
       return user.save()
       .then((result)=>{
-        res.status(201).json({message:"Task Deleted Successfully"})
+        res.status(200).json({tasks:result.userTasks})
       });
     }
 
