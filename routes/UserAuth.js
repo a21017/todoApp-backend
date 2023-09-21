@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { signUp, login, userProfile, addTask, getUserData, deleteTask } = require("../controllers/UserAuth");
+const { signUp, login, userProfile, addTask, getUserData, deleteTask,markCompleted } = require("../controllers/UserAuth");
 const { isAuth } = require("../controllers/isAuth");
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.post('/addTask',isAuth,addTask);
 
 router.post('/deleteTask',isAuth,deleteTask);
 
+router.post('/markCompleted',isAuth,markCompleted);
 
 
 module.exports = router;
